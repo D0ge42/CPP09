@@ -24,5 +24,5 @@ int main(int ac, char **av)
   //
   std::ifstream input_file (av[1]);
   bp.setInputFile(input_file);
-  bp.parseDateAndValue();
+  bp.printConversion();
 }

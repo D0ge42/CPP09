@@ -1,5 +1,6 @@
 #include "BitcoinExchange.hpp"
 #include <algorithm>
+#include <cstdio>
 #include <cstring>
 #include <ctime>
 #include <fstream>
@@ -27,7 +28,7 @@ BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other)
 }
 
 
-void BitcoinExchange::parseDateAndValue()
+void BitcoinExchange::printConversion()
 {
   std::string to_check;
   std::ifstream *input_file = this->infile;
@@ -40,17 +41,49 @@ void BitcoinExchange::parseDateAndValue()
       if (++i == 0)
         continue;
       if (checkDate(to_check) && checkValue(to_check))
-        std::cout << to_check << std::endl;
+      {
+        std::cout << findDate(to_check);
+      }
     }
     input_file->close();
   }
 }
 
+std::string BitcoinExchange::findDate(std::string date)
+{
+  std::string to_compare;
+  const char *db = "srcs/data.csv";
+  std::ifstream input_file(db);
+  int i = -1;
+
+  if (input_file.is_open())
+  {
+    while ( getline (input_file,to_compare))
+    {
+      if (++i == 0)
+        continue;
+      std::cout << "Comparing: " << to_compare.substr(0,to_compare.find_first_of(','))
+        << "with " << date.substr(0,date.find_first_of(' ')) << std::endl;
+      while (getline(input_file, to_compare))
+      {
+        if (to_compare.substr(to_compare.find_first_of(',')) == date.substr(0,date.find_first_of(' ')))
+        {
+          return to_compare.substr(0,to_compare.find_first_of(','));
+        }
+        else
+          return "Couldn't find a match\n";
+      }
+    }
+    input_file.close();
+  }
+  return "could not open file\n";
+}
+
 int BitcoinExchange::checkDate(std::string to_check)
 {
-  this->date->year =  to_check.substr(0,4);
-  this->date->month = to_check.substr(5,2);
-  this->date->day = to_check.substr(8,2);
+  this->date->year =  to_check.substr(0,to_check.find_first_of('-'));
+  this->date->month = to_check.substr(to_check.find_first_of('-') + 1,2);
+  this->date->day = to_check.substr(to_check.find_first_of('-') + 4,2);
   if (!is_year_valid(this->date->year) || !is_month_valid(this->date->month) || !is_day_valid(this->date->day))
   {
     std::cerr << "date not valid" << std::endl;
