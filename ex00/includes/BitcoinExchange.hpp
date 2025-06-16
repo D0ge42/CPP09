@@ -38,7 +38,7 @@ class BitcoinExchange
 
     // Serch date and retrieve value
 
-    std::string findDate(std::string date);
+    void findDate(std::string date);
     int retrieveValue();
     void printConversion();
 

@@ -42,14 +42,14 @@ void BitcoinExchange::printConversion()
         continue;
       if (checkDate(to_check) && checkValue(to_check))
       {
-        std::cout << findDate(to_check);
+        findDate(to_check);
       }
     }
     input_file->close();
   }
 }
 
-std::string BitcoinExchange::findDate(std::string date)
+void BitcoinExchange::findDate(std::string date)
 {
   std::string to_compare;
   const char *db = "srcs/data.csv";
@@ -62,21 +62,15 @@ std::string BitcoinExchange::findDate(std::string date)
     {
       if (++i == 0)
         continue;
-      std::cout << "Comparing: " << to_compare.substr(0,to_compare.find_first_of(','))
-        << "with " << date.substr(0,date.find_first_of(' ')) << std::endl;
-      while (getline(input_file, to_compare))
+      // std::cout << "Comparing: " << to_compare.substr(0,to_compare.find_first_of(','))
+      //   << "with " << date.substr(0,date.find_first_of(' ')) << std::endl;
+      if (to_compare.substr(to_compare.find_first_of(',')) == date.substr(0,date.find_first_of(' ')))
       {
-        if (to_compare.substr(to_compare.find_first_of(',')) == date.substr(0,date.find_first_of(' ')))
-        {
-          return to_compare.substr(0,to_compare.find_first_of(','));
-        }
-        else
-          return "Couldn't find a match\n";
+        std::cout << to_compare.substr(0,to_compare.find_first_of(','));
       }
     }
     input_file.close();
   }
-  return "could not open file\n";
 }
 
 int BitcoinExchange::checkDate(std::string to_check)
