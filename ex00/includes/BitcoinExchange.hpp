@@ -2,6 +2,9 @@
 #define BITCOINEXCHANGE_HPP
 
 #include <fstream>
+#include <map>
+#include <ostream>
+#include <string>
 
 struct t_date
 {
@@ -9,16 +12,21 @@ struct t_date
   std::string year;
   std::string month;
   std::string day;
-  int conversion_rate;
-  int value;
 };
 
+struct t_value
+{
+  std::string date;
+  float conversion_rate;
+};
 
 class BitcoinExchange
 {
   private:
     t_date *date;
+    t_value *value;
     std::ifstream *infile;
+    std::map<t_value *, float> map;
 
   public:
     BitcoinExchange(void);
@@ -27,26 +35,15 @@ class BitcoinExchange
 
     BitcoinExchange &operator=(const BitcoinExchange &other);
 
-    // Public Methods.
-    int checkDate(std::string to_check);
-    int checkValue(std::string to_check);
-    int checkFormat(std::string to_check);
 
-    int is_year_valid(const std::string year);
-    int is_month_valid(const std::string year);
-    int is_day_valid(const std::string year);
-
-    // Serch date and retrieve value
-
-    void findDate(std::string date);
-    int retrieveValue();
-    void printConversion();
-
-
-    // getters setters
-    void setInputFile(std::ifstream  &infile);
-    void setDate(t_date *date);
+    bool checkDate (std::string date);
+    bool checkValue (std::string date);
 
 };
+
+// check if date and value are valid
+// if no just return error
+// else
+// store them in t_value
 
 #endif
