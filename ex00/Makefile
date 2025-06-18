@@ -10,6 +10,7 @@ SRC = srcs/main.cpp \
 			srcs/BitcoinExchange.cpp \
 			srcs/checkers.cpp \
 			srcs/fillMap.cpp \
+			srcs/helpers.cpp \
 
 
 OBJ = $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)

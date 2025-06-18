@@ -12,9 +12,8 @@
  * This function returns the first element of a subsequence of elements that matches the given key.
  * If unsuccessful it returns an iterator pointing to the first element that has a greater value
  * than given key or end() if no such element exists.
- * Ex: 1999-06-01 not found, found 1999-07-01 --> it -- and we get the spot where the date should
- * be.*/
-
+ * Ex: 1999-06-01 not found, found 1999-07-01 --> it -- and we get the spot where the date should be.
+ * */
 
 void BitcoinExchange::printConversion()
 {
@@ -23,48 +22,46 @@ void BitcoinExchange::printConversion()
   std::map<std::string, float>::iterator it;
 
   map = fillMapWithDates();
+
   if (this->infile->is_open() == false)
+  {
+    std::cerr << ERR_OPEN_FILE << std::endl;
     return ;
+  }
 
   while(std::getline(*this->infile,line))
   {
-    std::string to_compare = checkDate(line);
-    float value = checkValue(line);
+    std::string date = getDate(line);
+    float value = getValue(line);
 
-      if (to_compare == "")
-      {
-        std::cerr << E_BI << " => " << to_compare << std::endl;
-        continue;
-      }
-      else if (value < 0 )
-      {
-        std::cerr << E_LZ << " => " << value << std::endl;
-        continue;
-      }
-      else if (value > 2147483647.0)
-      {
-        std::cerr << E_OF << " => " << value << std::endl;
-        continue;
-      }
-      else if (value > 1000)
-      {
-        std::cerr << E_OT << " => " << value << std::endl;
-        continue;
-      }
+    if (date == "date")
+      continue;
 
-      it = map.lower_bound(to_compare);
-      if (it == map.end() || it->first != to_compare)
+    setErrType(date,value);
+
+    if (this->err_type & (E_BAD_INPUT | E_NEG_VALUE | E_OF_VALUE
+          | E_LRG_VALUE | E_STR_LEN | E_YMD_INV | E_ONLY_DIG))
+    {
+      printErr(date, value);
+      continue;
+    }
+
+    it = map.lower_bound(date);
+    if (it == map.end() || it->first != date)
+    {
+      if (it == map.begin())
       {
-        if (it == map.begin())
-        {
-            std::cerr << "Error: no earlier date found for " << to_compare << std::endl;
-            continue;
-        }
-        --it;
+          std::cerr << ERR_ERL_DATE << date << std::endl;
+          continue;
       }
-      std::cout << it->first << " => " << value << " = " << value * it->second << std::endl;
+      --it;
+    }
+    std::cout << it->first << " => " << value << " = " << value * it->second << std::endl;
   }
 }
+
+
+/* Function used to fill a map with key value pair from database.csv*/
 
 std::map <std::string, float> BitcoinExchange::fillMapWithDates()
 {
@@ -85,13 +82,4 @@ std::map <std::string, float> BitcoinExchange::fillMapWithDates()
     db.close();
   }
   return map;
-}
-
-void BitcoinExchange::printMap()
-{
-  std::map<std::string,float>::iterator it;
-  for (it  = this->map.begin(); it != this->map.end(); it++)
-  {
-    std::cout << it->first << ": " << it->second << std::endl;
-  }
 }

@@ -11,5 +11,4 @@ int main(int ac, char **av)
   be.setInputFile(in);
   be.fillMapWithDates();
   be.printConversion();
-
 }

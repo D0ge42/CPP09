@@ -1,42 +1,38 @@
 #include "BitcoinExchange.hpp"
 #include <cstdlib>
 #include <iostream>
+#include <stdexcept>
 
-static bool is_year_valid(std::string date);
-static bool is_month_valid(std::string date);
-static bool is_day_valid(std::string date);
-
-std::string BitcoinExchange::checkDate(std::string to_check)
+std::string BitcoinExchange::getDate(std::string to_check)
 {
   std::string date;
   unsigned long end_date = to_check.find_first_of(' ');
-  date = to_check.substr(0,end_date);
+  try
+  {
+    date = to_check.substr(0,end_date);
+  }
+  catch(std::out_of_range &e)
+  {
+    std::cout << e.what() << std::endl;
+  }
 
-  if (date.length() != 10)
-    return "";
-  if (!is_year_valid(date) || !is_month_valid(date) || !is_day_valid(date))
-    return "";
   return date;
 }
 
 
-float BitcoinExchange::checkValue(std::string date)
+float BitcoinExchange::getValue(std::string date)
 {
   std::string str_conv;
-  float num_conv;
+  float num;
   unsigned long value_idx;
 
   value_idx = date.find_first_of('|') + 2;
-  str_conv = date.substr(value_idx);
-  num_conv = std::atof(date.substr(value_idx).c_str());
+  num = std::atof(date.substr(value_idx).c_str());
 
-  if (str_conv.find_first_not_of("0123456789+-.") != std::string::npos)
-    return 0.0;
-  return num_conv;
+  return num;
 }
 
-
-static bool is_year_valid(std::string date)
+bool BitcoinExchange::is_year_valid(std::string date)
 {
   std::string year = date.substr(0,4);
   if (year.find_first_not_of("0123456789") != std::string::npos)
@@ -45,7 +41,7 @@ static bool is_year_valid(std::string date)
 }
 
 
-static bool is_month_valid(std::string date)
+bool BitcoinExchange::is_month_valid(std::string date)
 {
   std::string month = date.substr(5,2);
   int numeric_month = std::atoi(month.c_str());
@@ -60,7 +56,7 @@ static bool is_month_valid(std::string date)
 }
 
 
-static bool is_day_valid(std::string date)
+bool BitcoinExchange::is_day_valid(std::string date)
 {
   std::string day = date.substr(8,2);
   int numeric_day = std::atoi(day.c_str());
