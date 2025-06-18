@@ -9,6 +9,7 @@ OBJ_DIR = objs
 SRC = srcs/main.cpp \
 			srcs/BitcoinExchange.cpp \
 			srcs/checkers.cpp \
+			srcs/fillMap.cpp \
 
 
 OBJ = $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)

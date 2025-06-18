@@ -3,8 +3,12 @@
 
 #include <fstream>
 #include <map>
-#include <ostream>
 #include <string>
+
+#define E_BI "\033[1;91mError: bad input\033[0m"
+#define E_LZ "\033[1;91mError: value is negative\033[0m"
+#define E_OF "\033[1;91mError: value overflow\033[0m"
+#define E_OT "\033[1;91mError: value too large\033[0m"
 
 struct t_date
 {
@@ -23,10 +27,8 @@ struct t_value
 class BitcoinExchange
 {
   private:
-    t_date *date;
-    t_value *value;
     std::ifstream *infile;
-    std::map<t_value *, float> map;
+    std::map<std::string, float> map;
 
   public:
     BitcoinExchange(void);
@@ -36,8 +38,13 @@ class BitcoinExchange
     BitcoinExchange &operator=(const BitcoinExchange &other);
 
 
-    bool checkDate (std::string date);
-    bool checkValue (std::string date);
+    std::string checkDate (std::string date);
+    float checkValue (std::string date);
+    void setInputFile(std::ifstream &ref);
+    std::map <std::string, float> fillMapWithDates();
+    void printConversion();
+    void printMap();
+
 
 };
 

@@ -1,8 +1,8 @@
 #include "BitcoinExchange.hpp"
+#include <fstream>
 
 BitcoinExchange::BitcoinExchange(void)
 {
-  this->value = new t_value();
 }
 
 BitcoinExchange::BitcoinExchange(const BitcoinExchange &other)
@@ -13,11 +13,15 @@ BitcoinExchange::BitcoinExchange(const BitcoinExchange &other)
 BitcoinExchange::~BitcoinExchange(void)
 {
 
-  delete this->value;
 }
 
 BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other)
 {
   (void)other;
   return (*this);
+}
+
+void BitcoinExchange::setInputFile(std::ifstream &ref)
+{
+  this->infile = &ref;
 }
