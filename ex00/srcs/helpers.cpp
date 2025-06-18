@@ -12,6 +12,7 @@
 void BitcoinExchange::setErrType(std::string date, float value)
 {
   unsigned long value_idx = 0;
+  // unsigned long first_dig_idx = 0;
   std::string  str_conv = "";
   try
   {
@@ -19,17 +20,16 @@ void BitcoinExchange::setErrType(std::string date, float value)
   }
   catch (std::out_of_range &e)
   {
-    std::cout << e.what() << std::endl;
-    return;
+    this->err_type = E_BAD_INPUT;
   }
   try
   {
+    // first_dig_idx = date.find_first_of(value_idx,date.find_last_of(' '));
     std::string  str_conv = date.substr(value_idx);
   }
   catch (std::out_of_range &e)
   {
-    std::cout << e.what() << std::endl;
-    return;
+    this->err_type = E_BAD_INPUT;
   }
 
   if (date.length() != 10)

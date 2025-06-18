@@ -25,8 +25,10 @@ float BitcoinExchange::getValue(std::string date)
   std::string str_conv;
   float num;
   unsigned long value_idx;
+  // unsigned long first_dig_idx;
 
   value_idx = date.find_first_of('|') + 2;
+  // first_dig_idx = date.find_first_of(value_idx,date.find_first_not_of(' '));
   num = std::atof(date.substr(value_idx).c_str());
 
   return num;
