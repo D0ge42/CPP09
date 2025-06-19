@@ -1,4 +1,4 @@
-NAME = mutantstack
+NAME = rpn
 
 CC = g++
 CFLAGS = -Wall -Wextra -Werror -std=c++98 -Iincludes -g -gdwarf-4
@@ -7,6 +7,9 @@ SRC_DIR = srcs
 OBJ_DIR = objs
 
 SRC = srcs/main.cpp \
+	  srcs/RPN.cpp \
+	  srcs/parser.cpp \
+	  srcs/calculate.cpp
 
 
 OBJ = $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
