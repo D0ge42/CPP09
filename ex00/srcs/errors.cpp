@@ -92,12 +92,3 @@ void BitcoinExchange::printErr(std::string to_compare, int value)
       return;
   }
 }
-
-void BitcoinExchange::printMap()
-{
-  std::map<std::string,float>::iterator it;
-  for (it  = this->map.begin(); it != this->map.end(); it++)
-  {
-    std::cout << it->first << ": " << it->second << std::endl;
-  }
-}
