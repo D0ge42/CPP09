@@ -1,20 +1,20 @@
 #include "RPN.hpp"
 #include <cctype>
+#include <cstdlib>
 #include <cstring>
 #include <iostream>
 #include <ostream>
 #include <stack>
+#include <utility>
 
 static bool is_sign(char c);
-static int do_math(int num1, int num2 , char sign);
+static long long int do_math(t_op &op);
 
 void RPN::calculate(const char *str)
 {
   int len = strlen(str);
-  int res = 0;
-  char sign = 0;
-  int first_num;
-  int second_num;
+  t_op op;
+  op.op = 0;
   std::stack<int> stack;
 
   for (int i = 0; i < len ; i++)
@@ -25,9 +25,9 @@ void RPN::calculate(const char *str)
     }
     else if (is_sign(str[i]) == true)
     {
-      sign = str[i];
+      op.op = str[i];
     }
-    if (sign != 0)
+    if (op.op != 0)
     {
       if (stack.size() < 2)
       {
@@ -36,29 +36,42 @@ void RPN::calculate(const char *str)
       }
       else
       {
-        first_num = stack.top();
+        op.f_n = stack.top();
         stack.pop();
-        second_num = stack.top();
+        op.s_n = stack.top();
         stack.pop();
-        res = do_math(first_num, second_num, sign);
-        stack.push(res);
-        sign = 0;
+        op.res = do_math(op);
+        stack.push(op.res);
+        op.op = 0;
       }
     }
   }
-  std::cout << "Result: " << res << std::endl;
+  std::cout << "Result: " << op.res << std::endl;
 }
 
-static int do_math(int num1, int num2 , char sign)
+static long long int do_math(t_op &op)
 {
-  if (sign == '+')
-    return num1 + num2;
-  if (sign == '-')
-    return num2 - num1;
-  if (sign == '/')
-    return num2 / num1;
-  if (sign == '*')
-    return num2 * num1;
+  if (op.f_n == 0 && op.s_n == 0 && op.op == '/')
+  {
+    std::cerr << ERR_DIV_ZERO << std::endl;
+    exit(1);
+  }
+  if (op.op == '*')
+  {
+    if (op.f_n * op.s_n > 2147483647)
+    {
+      std::cerr << ERR_RES_OVERFLOW << std::endl;
+      exit(1);
+    }
+  }
+  if (op.op == '+')
+    return op.f_n + op.s_n;
+  if (op.op == '-')
+    return op.s_n - op.f_n;
+  if (op.op == '/')
+    return op.s_n / op.f_n;
+  if (op.op == '*')
+    return op.s_n * op.f_n;
   return 0;
 }
 
