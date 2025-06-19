@@ -8,9 +8,9 @@ OBJ_DIR = objs
 
 SRC = srcs/main.cpp \
 			srcs/BitcoinExchange.cpp \
-			srcs/checkers.cpp \
-			srcs/fillMap.cpp \
-			srcs/helpers.cpp \
+			srcs/getters_and_checkers.cpp \
+			srcs/exec.cpp \
+			srcs/errors.cpp \
 
 
 OBJ = $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)

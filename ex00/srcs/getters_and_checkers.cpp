@@ -3,6 +3,10 @@
 #include <iostream>
 #include <stdexcept>
 
+/* In this file we find getDate and getValue, used to get both date and
+ * values for the database and input file, depending on the delim param */
+
+
 std::string BitcoinExchange::getDate(std::string to_check, char delim)
 {
   std::string date;
@@ -29,8 +33,14 @@ float BitcoinExchange::getValue(std::string date, char delim)
 
   value_idx = date.find_first_of(delim);
   first_dig_idx = date.find_first_of(value_idx,date.find_first_of('\n'));
-  num = std::atof(date.substr(value_idx + 1,first_dig_idx).c_str());
-
+  try
+  {
+    num = std::atof(date.substr(value_idx + 1,first_dig_idx).c_str());
+  }
+  catch(std::out_of_range &e)
+  {
+    std::cout << e.what() << std::endl;
+  }
   return num;
 }
 

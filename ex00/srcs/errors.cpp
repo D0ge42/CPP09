@@ -9,6 +9,18 @@
 #include <string>
 #include <utility>
 
+bool BitcoinExchange::is_err(std::string print, std::string date, float value)
+{
+  if (this->err_type & (E_BAD_INPUT | E_NEG_VALUE | E_OF_VALUE
+      | E_LRG_VALUE | E_STR_LEN | E_YMD_INV | E_ONLY_DIG))
+  {
+    if (print == PRINT)
+      printErr(date, value);
+    return true;
+  }
+  return false;
+}
+
 void BitcoinExchange::setErrType(std::string date, float value, char delim)
 {
   unsigned long value_idx = 0;
@@ -51,47 +63,33 @@ void BitcoinExchange::setErrType(std::string date, float value, char delim)
 
 }
 
-bool BitcoinExchange::is_err(std::string print, std::string date, float value)
-{
-  if (this->err_type & (E_BAD_INPUT | E_NEG_VALUE | E_OF_VALUE
-      | E_LRG_VALUE | E_STR_LEN | E_YMD_INV | E_ONLY_DIG))
-  {
-    if (print == PRINT)
-      printErr(date, value);
-    return true;
-  }
-  return false;
-}
-
 void BitcoinExchange::printErr(std::string to_compare, int value)
 {
-  if (this->err_type & E_BAD_INPUT)
+  switch (this->err_type)
   {
-        std::cerr << ERR_BAD_INPUT << " => " << to_compare << std::endl;
-  }
-  if (this->err_type & E_NEG_VALUE)
-  {
-        std::cerr << ERR_NEG_VALUE << " => " << value << std::endl;
-  }
-  if (this->err_type & E_OF_VALUE)
-  {
-        std::cerr << ERR_OF_VALUE << " => " << value << std::endl;
-  }
-  if (this->err_type & E_LRG_VALUE)
-  {
-        std::cerr << ERR_LRG_VALUE << " => " << value << std::endl;
-  }
-  if (this->err_type & E_STR_LEN)
-  {
-        std::cerr << ERR_STR_LEN << " => " << to_compare << std::endl;
-  }
-  if (this->err_type & E_YMD_INV)
-  {
-        std::cerr << ERR_YMD_INVALID << " => " << to_compare << std::endl;
-  }
-  if (this->err_type & E_ONLY_DIG)
-  {
-        std::cerr << ERR_ONLY_DIG << " => " << value << std::endl;
+    case E_BAD_INPUT:
+      std::cerr << ERR_BAD_INPUT << " => " << to_compare << std::endl;
+      break;
+    case E_NEG_VALUE:
+      std::cerr << ERR_NEG_VALUE << " => " << value << std::endl;
+      break;
+    case E_OF_VALUE:
+      std::cerr << ERR_OF_VALUE << " => " << value << std::endl;
+      break;
+    case E_LRG_VALUE:
+      std::cerr << ERR_LRG_VALUE << " => " << value << std::endl;
+      break;
+    case E_STR_LEN:
+      std::cerr << ERR_STR_LEN << " => " << to_compare << std::endl;
+      break;
+    case E_YMD_INV:
+      std::cerr << ERR_YMD_INVALID << " => " << to_compare << std::endl;
+      break;
+    case E_ONLY_DIG:
+      std::cerr << ERR_ONLY_DIG << " => " << value << std::endl;
+      break;
+    default:
+      return;
   }
 }
 
