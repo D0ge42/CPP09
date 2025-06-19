@@ -4,6 +4,7 @@
 int main(int ac, char **av)
 {
   RPN rpn;
+
   if (ac != 2)
   {
     std::cerr << ERR_NUM_ARGV << std::endl;

@@ -13,7 +13,6 @@ class RPN
   private:
     size_t num_digits;
     size_t num_sign;
-    std::stack<int> *stack;
 
   public:
     RPN(void);
