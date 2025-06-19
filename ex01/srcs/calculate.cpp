@@ -14,8 +14,8 @@ void RPN::calculate(const char *str)
   int len = strlen(str);
   int res = 0;
   char f_sign = 0;
-
-  std::stack<int> *stack = this->stack;
+  int first_num;
+  int second_num;
 
   for (int i = 0; i < len ; i++)
   {
@@ -27,15 +27,23 @@ void RPN::calculate(const char *str)
     {
       f_sign = str[i];
     }
-    if (stack->size() >= 2 && f_sign != 0)
+    if (f_sign != 0)
     {
-      int first_num = stack->top();
-      stack->pop();
-      int second_num = stack->top();
-      stack->pop();
-      res = do_math(first_num, second_num, f_sign);
-      stack->push(res);
-      f_sign = 0;
+      if (stack->size() < 2)
+      {
+        std::cerr << ERR_NUM_COUNT << std::endl;
+        return;
+      }
+      else
+      {
+        first_num = stack->top();
+        stack->pop();
+        second_num = stack->top();
+        stack->pop();
+        res = do_math(first_num, second_num, f_sign);
+        stack->push(res);
+        f_sign = 0;
+      }
     }
   }
   std::cout << "Result: " << res << std::endl;

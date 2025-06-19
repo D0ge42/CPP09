@@ -6,6 +6,7 @@
 #define ERR_UNKW_CHARS "Error: input string can only contain '1234567890 */+-'"
 #define ERR_NUM_ARGV "Error: invalid number of arguments: ./rpn polish notation"
 #define ERR_MAL_EXPR "Error: malformed expression. Num of sign must be == num_of_digits -  1"
+#define ERR_NUM_COUNT "Error: not enough numbers in the stack"
 
 class RPN
 {
