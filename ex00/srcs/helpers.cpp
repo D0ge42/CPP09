@@ -9,14 +9,14 @@
 #include <string>
 #include <utility>
 
-void BitcoinExchange::setErrType(std::string date, float value)
+void BitcoinExchange::setErrType(std::string date, float value, char delim)
 {
   unsigned long value_idx = 0;
-  // unsigned long first_dig_idx = 0;
+  unsigned long first_dig_idx = 0;
   std::string  str_conv = "";
   try
   {
-    value_idx = date.find_first_of('|') + 2;
+    value_idx = date.find_first_of(delim);
   }
   catch (std::out_of_range &e)
   {
@@ -24,8 +24,8 @@ void BitcoinExchange::setErrType(std::string date, float value)
   }
   try
   {
-    // first_dig_idx = date.find_first_of(value_idx,date.find_last_of(' '));
-    std::string  str_conv = date.substr(value_idx);
+    first_dig_idx = date.find_first_of(value_idx,date.find_first_of('\n'));
+    std::string  str_conv = date.substr(value_idx + 1, first_dig_idx);
   }
   catch (std::out_of_range &e)
   {
@@ -44,11 +44,23 @@ void BitcoinExchange::setErrType(std::string date, float value)
     this->err_type = E_NEG_VALUE;
   else if (value > 2147483647.0)
     this->err_type = E_OF_VALUE;
-  else if (value > 1000)
+  else if (value > 1000 && delim == '|')
     this->err_type = E_LRG_VALUE;
   else
     this->err_type = NONE;
 
+}
+
+bool BitcoinExchange::is_err(std::string print, std::string date, float value)
+{
+  if (this->err_type & (E_BAD_INPUT | E_NEG_VALUE | E_OF_VALUE
+      | E_LRG_VALUE | E_STR_LEN | E_YMD_INV | E_ONLY_DIG))
+  {
+    if (print == PRINT)
+      printErr(date, value);
+    return true;
+  }
+  return false;
 }
 
 void BitcoinExchange::printErr(std::string to_compare, int value)

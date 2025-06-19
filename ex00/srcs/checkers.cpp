@@ -3,10 +3,10 @@
 #include <iostream>
 #include <stdexcept>
 
-std::string BitcoinExchange::getDate(std::string to_check)
+std::string BitcoinExchange::getDate(std::string to_check, char delim)
 {
   std::string date;
-  unsigned long end_date = to_check.find_first_of(' ');
+  unsigned long end_date = to_check.find_first_of(delim);
   try
   {
     date = to_check.substr(0,end_date);
@@ -20,16 +20,16 @@ std::string BitcoinExchange::getDate(std::string to_check)
 }
 
 
-float BitcoinExchange::getValue(std::string date)
+float BitcoinExchange::getValue(std::string date, char delim)
 {
   std::string str_conv;
   float num;
   unsigned long value_idx;
-  // unsigned long first_dig_idx;
+  unsigned long first_dig_idx;
 
-  value_idx = date.find_first_of('|') + 2;
-  // first_dig_idx = date.find_first_of(value_idx,date.find_first_not_of(' '));
-  num = std::atof(date.substr(value_idx).c_str());
+  value_idx = date.find_first_of(delim);
+  first_dig_idx = date.find_first_of(value_idx,date.find_first_of('\n'));
+  num = std::atof(date.substr(value_idx + 1,first_dig_idx).c_str());
 
   return num;
 }

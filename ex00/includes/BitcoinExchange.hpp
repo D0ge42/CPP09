@@ -14,6 +14,8 @@
 #define ERR_STR_LEN "\033[1;91mError: date string must be exactly 10 chars (yyyy-mm-dd)\033[0m"
 #define ERR_YMD_INVALID "\033[1;91mError: Year month or date are invalid \033[0m"
 #define ERR_ONLY_DIG "\033[1;91mError: value can only contain digits \033[0m"
+#define PRINT "print"
+#define NO_PRINT "no_print"
 
 typedef enum e_type
 {
@@ -57,18 +59,19 @@ class BitcoinExchange
     BitcoinExchange &operator=(const BitcoinExchange &other);
 
 
-    std::string getDate (std::string date);
-    float getValue (std::string date);
+    std::string getDate (std::string date, char delim);
+    float getValue (std::string date, char delim);
     void setInputFile(std::ifstream &ref);
     std::map <std::string, float> fillMapWithDates();
     void printConversion();
     void printMap();
-    void setErrType(std::string date, float value);
+    void setErrType(std::string date, float value, char delim);
     void printErr(std::string to_compare,int value);
 
     bool is_year_valid(std::string date);
     bool is_month_valid(std::string date);
     bool is_day_valid(std::string date);
+    bool is_err(std::string print, std::string date, float value);
 
 };
 

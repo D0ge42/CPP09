@@ -31,20 +31,15 @@ void BitcoinExchange::printConversion()
 
   while(std::getline(*this->infile,line))
   {
-    std::string date = getDate(line);
-    float value = getValue(line);
+    std::string date = getDate(line,' ');
+    float value = getValue(line,'|');
 
     if (date == "date")
       continue;
 
-    setErrType(date,value);
-
-    if (this->err_type & (E_BAD_INPUT | E_NEG_VALUE | E_OF_VALUE
-          | E_LRG_VALUE | E_STR_LEN | E_YMD_INV | E_ONLY_DIG))
-    {
-      printErr(date, value);
-      continue;
-    }
+    setErrType(date,value,'|');
+    if (is_err(PRINT,date,value) == true)
+        continue;
 
     it = map.lower_bound(date);
     if (it == map.end() || it->first != date)
@@ -74,9 +69,11 @@ std::map <std::string, float> BitcoinExchange::fillMapWithDates()
   {
     while(std::getline(db,line))
     {
-      unsigned long idx = line.find_first_of(',');
-      std::string date = line.substr(0,idx);
-      float value = std::atof(line.substr(idx + 1).c_str());
+      std::string date = getDate(line,',');
+      float value = getValue(line,',');
+      setErrType(date,value,',');
+      if (is_err(NO_PRINT,date,value) == true)
+        continue;
       map.insert(std::make_pair(date,value));
     }
     db.close();
