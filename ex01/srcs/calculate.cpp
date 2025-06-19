@@ -51,7 +51,7 @@ void RPN::calculate(const char *str)
 
 static long long int do_math(t_op &op)
 {
-  if (op.f_n == 0 && op.s_n == 0 && op.op == '/')
+  if (op.f_n == 0 && op.op == '/')
   {
     std::cerr << ERR_DIV_ZERO << std::endl;
     exit(1);
