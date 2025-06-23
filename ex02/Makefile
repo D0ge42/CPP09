@@ -1,4 +1,4 @@
-NAME = mutantstack
+NAME = PmergeMe
 
 CC = g++
 CFLAGS = -Wall -Wextra -Werror -std=c++98 -Iincludes -g -gdwarf-4
