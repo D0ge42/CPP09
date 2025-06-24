@@ -7,6 +7,9 @@ SRC_DIR = srcs
 OBJ_DIR = objs
 
 SRC = srcs/main.cpp \
+	  srcs/PmergeMe.cpp \
+	  srcs/makePairs.cpp \
+	  srcs/printers.cpp
 
 
 OBJ = $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
