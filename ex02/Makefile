@@ -8,8 +8,10 @@ OBJ_DIR = objs
 
 SRC = srcs/main.cpp \
 	  srcs/PmergeMe.cpp \
-	  srcs/makePairs.cpp \
-	  srcs/printers.cpp
+	  srcs/printers.cpp \
+	  srcs/sortVec.cpp \
+	  srcs/sortList.cpp \
+	  srcs/parser.cpp \
 
 
 OBJ = $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
