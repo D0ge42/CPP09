@@ -17,22 +17,34 @@ int main(int ac , char **av)
 
   int i = 1;
 
-  if (ac < 2)
+  if (ac <= 2)
   {
-    std::cerr << "Please provide at least 2 positive integers";
+    std::cerr << ERR_ARGS << std::endl;
     return 1;
   }
 
 
   for (; i < ac; i++)
   {
+    std::string arg = av[i];
+    if (arg.find_first_not_of("1234567890") != 18446744073709551615UL)
+    {
+      std::cerr << ERR_NOT_INT << std::endl;
+      return 1;
+    }
+
     int num = std::atoi(av[i]);
     vec.push_back(num);
     list.push_back(num);
     set.insert(num);
   }
 
-  pm.parser(vec);
+  if (set.size() != vec.size())
+  {
+    std::cerr << ERR_NOT_UNIQUE << std::endl;
+    return 1;
+  }
+
   pm.printContainer(vec,BEFORE);
 
   const std::clock_t v_start = std::clock();

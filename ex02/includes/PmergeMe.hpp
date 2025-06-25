@@ -9,6 +9,9 @@
 #include <sys/time.h>
 #include <iostream>
 
+#define ERR_ARGS "\033[1;91mError: Please provide at least 2 positive integers\033[0m"
+#define ERR_NOT_INT "\033[1;91mError: only positive integers are supported\033[0m"
+#define ERR_NOT_UNIQUE "\033[1;91mError: There can only be unique elements\033[0m"
 #define BEFORE 'b'
 #define AFTER 'a'
 

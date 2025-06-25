@@ -11,7 +11,6 @@ SRC = srcs/main.cpp \
 	  srcs/printers.cpp \
 	  srcs/sortVec.cpp \
 	  srcs/sortList.cpp \
-	  srcs/parser.cpp \
 
 
 OBJ = $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
